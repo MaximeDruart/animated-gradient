@@ -67,8 +67,7 @@ function updateUniforms() {
   // plus sign converts to number
   sandbox.setUniform("u_bleed_only", +params.bleedOnly)
 
-  console.log(typeof palette.colorA, hexToRgb(palette.colorA))
-
+  // handle if an hex value is inputed
   for (const color in palette) {
     if (typeof palette[color] === "string") {
       const { r, g, b } = hexToRgb(palette[color])

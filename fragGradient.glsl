@@ -148,31 +148,35 @@ void main(){
 	}
 	
 	// added a bit of grain on top
-	color+=rand(p)*u_noise_strength;
 
     // add the top gradient 
 	
 	// meaning of each number :
 	// how low the bar is (0-1) ; how strong the noise affects it (0 -inf) ; scale of noise (how many "eyes") ; another way to edit scale
-	topBleed = 0.17 + 0.3*simplex3d_fractal(p3*0.7+3.);
+	topBleed = 0.37 + 0.25*simplex3d_fractal(p3*0.7+3.);
+	// topBleed = 0.2;
 	// first pass to remove all bottom white values
-	topBleed=smoothstep(0.,  1. - (st.y) ,topBleed);
+	topBleed=smoothstep(0.,  1. - (st.y*0.5) ,topBleed);
 	// topBleed = smoothstep(0., 0.6, topBleed);
 	// second pass to remove more values, edit first value to change the length of the blend between top and bottom
-    topBleed=smoothstep(0.01, 1., topBleed );
+    topBleed =smoothstep(0.35, 1., topBleed );
 	// match it with the color ( set as white for now, so not seeable)
     topBleedColor = vec3(topBleedColor.r * topBleed, topBleedColor.g * topBleed, topBleedColor.b * topBleed );
     color+= topBleedColor;
-	
 
-    // gl_FragColor = vec4(vec3(value), 1.);
+	color-=vec3(rand(p)*u_noise_strength);
+
+	
 	if(u_bleed_only == 1. ){
-		color = vec3(topBleed);
+		color = vec3( topBleedColor );
 	}
 
 	
 	gl_FragColor=vec4(
 		color,
 	1.);
+
+    // gl_FragColor = vec4(vec3(rand(p)*u_noise_strength), 1.);
+
 	return;
 }
